@@ -83,7 +83,7 @@
         // Format Amount
         function formatAmount(amount, type) {
             const formatted = amount.toFixed(2);
-            return type === 'income' ? `+$${formatted}` : `−$${formatted}`;
+            return type === "income" ? `+₦${formatted}` : `−₦${formatted}`;
         }
 
         // Calculate Stats
@@ -105,14 +105,26 @@
         function updateStats() {
             const stats = calculateStats();
             
-            document.querySelector('.stat-card:nth-child(1) .stat-value').textContent = 
-                `$${stats.balance.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+            document.querySelector(
+              ".stat-card:nth-child(1) .stat-value"
+            ).textContent = `₦${stats.balance.toLocaleString("en-US", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}`;
             
-            document.querySelector('.stat-card:nth-child(2) .stat-value').textContent = 
-                `+$${stats.income.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+            document.querySelector(
+              ".stat-card:nth-child(2) .stat-value"
+            ).textContent = `+₦${stats.income.toLocaleString("en-US", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}`;
             
-            document.querySelector('.stat-card:nth-child(3) .stat-value').textContent = 
-                `−$${stats.expenses.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 0 })}`;
+            document.querySelector(
+              ".stat-card:nth-child(3) .stat-value"
+            ).textContent = `−₦${stats.expenses.toLocaleString("en-US", {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            })}`;
         }
 
         // Render Transactions
@@ -377,7 +389,7 @@
                                 family: "'IBM Plex Sans', sans-serif"
                             },
                             callback: function(value) {
-                                return '$' + value.toLocaleString();
+                                return "₦" + value.toLocaleString();
                             }
                         }
                     },

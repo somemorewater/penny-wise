@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require("cors");
 const dotenv = require('dotenv');
+const passport = require("passport");
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
+const googleAuthRoute = require("./routes/googleAuth");
 const path = require("path");
 
 dotenv.config();
@@ -13,7 +15,9 @@ const PORT = process.env.PORT;
 
 app.use(express.json()); 
 
+app.use(passport.initialize());
 app.use("/api", authRoutes);
+app.use("/auth", googleAuthRoute);
 
 app.use(express.static(path.join(__dirname, "public")));
 

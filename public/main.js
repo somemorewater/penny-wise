@@ -1,8 +1,12 @@
         // Check Authentication
-        const isLoggedIn = localStorage.getItem('isLoggedIn');
-        if (isLoggedIn !== 'true') {
-            window.location.href = './login.html';
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get("token");
+
+        if (token) {
+          localStorage.setItem("token", token);
+          window.history.replaceState({}, document.title, "/");
         }
+
 
         // Get current user
         const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');

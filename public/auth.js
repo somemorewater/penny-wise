@@ -1,57 +1,49 @@
-// Theme Toggle (works on all pages)
 const html = document.documentElement;
 const currentTheme = localStorage.getItem("theme") || "light";
 html.setAttribute("data-theme", currentTheme);
 
-// 🔥 Optional: always act logged-in for UI testing
-localStorage.setItem("isLoggedIn", "true");
+signupForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
 
-// Login Form (bypassed)
-const loginForm = document.getElementById("loginForm");
-if (loginForm) {
-  loginForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    showMessage("Auth disabled. Redirecting...", "info");
+  const fullName = signupForm.fullName.value;
+  const email = signupForm.email.value;
+  const password = signupForm.password.value;
 
-    setTimeout(() => {
-      window.location.href = "./index.html";
-    }, 500);
+  const res = await fetch("http://localhost:5000/api/signup", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ fullName, email, password }),
   });
-}
 
-// Signup Form (bypassed)
-const signupForm = document.getElementById("signupForm");
-if (signupForm) {
-  signupForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    showMessage("Signup disabled. UI only.", "info");
-  });
-}
+  const data = await res.json();
 
-// Logout (still works for navigation)
-function logout() {
-  window.location.href = "./login.html";
-}
-
-// Show message helper
-function showMessage(message, type) {
-  const existingMessage = document.querySelector(".auth-message");
-  if (existingMessage) existingMessage.remove();
-
-  const messageDiv = document.createElement("div");
-  messageDiv.className = `auth-message ${type}`;
-  messageDiv.textContent = message;
-
-  const form = document.querySelector(".auth-form");
-  if (form) {
-    form.insertBefore(messageDiv, form.firstChild);
-    setTimeout(() => messageDiv.remove(), 3000);
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "./index.html";
+  } else {
+    showMessage(data.message || "Signup failed", "error");
   }
-}
+});
 
-// Google button placeholder
-document.querySelectorAll(".btn-social").forEach((btn) => {
-  btn.addEventListener("click", () => {
-    showMessage("Social auth disabled.", "info");
+
+loginForm.addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const email = loginForm.email.value;
+  const password = loginForm.password.value;
+
+  const res = await fetch("http://localhost:5000/api/login", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email, password }),
   });
+
+  const data = await res.json();
+
+  if (data.token) {
+    localStorage.setItem("token", data.token);
+    window.location.href = "./index.html";
+  } else {
+    showMessage(data.message || "Login failed", "error");
+  }
 });

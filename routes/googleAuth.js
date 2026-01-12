@@ -21,7 +21,7 @@ passport.use(
           user = await User.create({
             fullName: profile.displayName,
             email: profile.emails[0].value,
-            password: null,
+            googleId: profile.id,
           });
         }
 

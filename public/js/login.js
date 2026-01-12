@@ -1,26 +1,84 @@
-const html = document.documentElement;
-const currentTheme = localStorage.getItem("theme") || "light";
-html.setAttribute("data-theme", currentTheme);
-
+import { showMessage } from "./utils.js";
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
+  const btn = loginForm.querySelector("button[type='submit']");
+  btn.disabled = true;
+  btn.textContent = "Logging in…";
+
+  showMessage("Logging in...", "info");
+
   const email = loginForm.email.value;
   const password = loginForm.password.value;
 
-  const res = await fetch("http://localhost:5000/api/login", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const res = await fetch("http://localhost:5000/api/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.token) {
+    if (!res.ok) {
+      showMessage(data.message || "Invalid email or password", "error");
+      btn.disabled = false;
+      btn.textContent = "Login";
+
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const btn = loginForm.querySelector("button[type='submit']");
+        btn.disabled = true;
+        btn.textContent = "Logging in…";
+
+        showMessage("Logging in...", "info");
+
+        const email = loginForm.email.value;
+        const password = loginForm.password.value;
+
+        try {
+          const res = await fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (!res.ok) {
+            showMessage(data.message || "Invalid email or password", "error");
+            btn.disabled = false;
+            btn.textContent = "Login";
+            return;
+          }
+
+          showMessage("Login successful", "success");
+          localStorage.setItem("token", data.token);
+
+          setTimeout(() => {
+            window.location.href = "./index.html";
+          }, 800);
+        } catch (err) {
+          showMessage("Server unreachable", "error");
+          btn.disabled = false;
+          btn.textContent = "Login";
+        }
+      });
+
+      return;
+    }
+
+    showMessage("Login successful", "success");
     localStorage.setItem("token", data.token);
-    window.location.href = "./index.html";
-  } else {
-    showMessage(data.message || "Login failed", "error");
+
+    setTimeout(() => {
+      window.location.href = "./index.html";
+    }, 800);
+  } catch (err) {
+    showMessage("Server unreachable", "error");
+    btn.disabled = false;
+    btn.textContent = "Login";
   }
 });

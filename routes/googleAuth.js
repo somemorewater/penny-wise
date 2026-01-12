@@ -15,13 +15,16 @@ passport.use(
     },
     async (_, __, profile, done) => {
       try {
-        let user = await User.findOne({ email: profile.emails[0].value });
+        const email = profile.emails[0].value;
+
+        let user = await User.findOne({ email });
 
         if (!user) {
           user = await User.create({
             fullName: profile.displayName,
-            email: profile.emails[0].value,
+            email,
             googleId: profile.id,
+            provider: "google",
           });
         }
 

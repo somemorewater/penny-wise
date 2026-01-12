@@ -4,7 +4,7 @@ const strengthBar = document.querySelector(".strength-bar");
 
 passwordInput.addEventListener("input", () => {
   const password = passwordInput.value;
-  strengthBar.className = "strength-bar"; // reset
+  strengthBar.className = "strength-bar";
 
   if (password.length === 0) return;
 

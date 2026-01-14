@@ -185,7 +185,16 @@
             });
         }
 
+        function closeAllModals() {
+          document.querySelectorAll(".modal-overlay").forEach((modal) => {
+            modal.classList.remove("active");
+            modal.style.display = "";
+          });
+        }
+
         function showModalMessage(message, type = "info") {
+          closeAllModals();
+
           const modal = document.getElementById("feedbackModal");
           const msg = document.getElementById("feedbackMessage");
           const title = document.getElementById("feedbackTitle");
@@ -199,17 +208,16 @@
               : "Info";
 
           msg.textContent = message;
-
           modal.classList.add("active");
 
-          closeBtn.onclick = () => modal.classList.remove("active");
-          setTimeout(() => modal.classList.remove("active"), 2500);
-        }
-
-
+          const close = () => modal.classList.remove("active");
+          closeBtn.onclick = close;
+          setTimeout(close, 2000);
+        };
 
         // Add Transaction
         document.getElementById('addTransaction').addEventListener('click', () => {
+            closeAllModals();
             editingId = null;
             document.getElementById('modalTitle').textContent = 'Add Transaction';
             document.getElementById("transactionDate").valueAsDate = new Date();
@@ -248,6 +256,7 @@
             updateStats();
             applyFilters();
             closeModal();
+            closeDeleteModal();
             showModalMessage("Transaction saved successfully", "success");
         });
 

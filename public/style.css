@@ -478,12 +478,14 @@ tbody tr:hover {
   justify-content: center;
   z-index: 1000;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
 .modal-overlay.active {
   display: flex;
   opacity: 1;
+  pointer-events: auto;
 }
 
 .modal {
@@ -581,21 +583,21 @@ tbody tr:hover {
   margin-top: 2rem;
 }
 
-#feedbackModal {
+/* #feedbackModal {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.5);
   justify-content: center;
   align-items: center;
   z-index: 9999;
-}
-#feedbackModal .modal {
+} */
+/* #feedbackModal .modal {
   background: var(--bg-primary);
   padding: 1.5rem;
   border-radius: 0.5rem;
   max-width: 400px;
   text-align: center;
-}
+} */
 
 .delete-confirmation {
   text-align: center;

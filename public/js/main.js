@@ -1,3 +1,4 @@
+        
         // Check Authentication
         const params = new URLSearchParams(window.location.search);
         const token = params.get("token");
@@ -184,11 +185,34 @@
             });
         }
 
+        function showModalMessage(message, type = "info") {
+          const modal = document.getElementById("feedbackModal");
+          const msg = document.getElementById("feedbackMessage");
+          const title = document.getElementById("feedbackTitle");
+          const closeBtn = document.getElementById("closeFeedbackModal");
+
+          title.textContent =
+            type === "success"
+              ? "Success"
+              : type === "error"
+              ? "Error"
+              : "Info";
+
+          msg.textContent = message;
+
+          modal.classList.add("active");
+
+          closeBtn.onclick = () => modal.classList.remove("active");
+          setTimeout(() => modal.classList.remove("active"), 2500);
+        }
+
+
+
         // Add Transaction
         document.getElementById('addTransaction').addEventListener('click', () => {
             editingId = null;
             document.getElementById('modalTitle').textContent = 'Add Transaction';
-            document.getElementById('transactionDate').valueAsDate = new Date();
+            document.getElementById("transactionDate").valueAsDate = new Date();
             openModal();
         });
 
@@ -197,11 +221,14 @@
             e.preventDefault();
 
             const formData = {
-                date: document.getElementById('transactionDate').value,
-                description: document.getElementById('transactionDescription').value,
-                category: document.getElementById('transactionCategory').value,
-                type: document.getElementById('transactionType').value,
-                amount: parseFloat(document.getElementById('transactionAmount').value)
+              date: document.getElementById("transactionDate").value,
+              description: document.getElementById("transactionDescription")
+                .value,
+              category: document.getElementById("transactionCategory").value,
+              type: document.getElementById("transactionType").value,
+              amount: parseFloat(
+                document.getElementById("transactionAmount").value
+              ),
             };
 
             if (editingId) {
@@ -221,6 +248,7 @@
             updateStats();
             applyFilters();
             closeModal();
+            showModalMessage("Transaction saved successfully", "success");
         });
 
         // Handle Edit

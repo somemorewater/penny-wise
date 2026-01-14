@@ -224,42 +224,6 @@
             openModal();
         });
 
-        // Handle Form Submit
-        transactionForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            const formData = {
-              date: document.getElementById("transactionDate").value,
-              description: document.getElementById("transactionDescription")
-                .value,
-              category: document.getElementById("transactionCategory").value,
-              type: document.getElementById("transactionType").value,
-              amount: parseFloat(
-                document.getElementById("transactionAmount").value
-              ),
-            };
-
-            if (editingId) {
-                // Update existing transaction
-                const index = transactions.findIndex(t => t.id === editingId);
-                if (index !== -1) {
-                    transactions[index] = { ...transactions[index], ...formData };
-                }
-            } else {
-                // Add new transaction
-                transactions.push({
-                    id: nextId++,
-                    ...formData
-                });
-            }
-
-            updateStats();
-            applyFilters();
-            closeModal();
-            closeDeleteModal();
-            showModalMessage("Transaction saved successfully", "success");
-        });
-
         // Handle Edit
         function handleEdit(e) {
             const id = parseInt(e.currentTarget.getAttribute('data-id'));

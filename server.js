@@ -4,7 +4,8 @@ const dotenv = require('dotenv');
 const passport = require("passport");
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
-const googleAuthRoute = require("./routes/googleAuth");
+const googleAuthRoute = require('./routes/googleAuth');
+const router = require('./routes/transaction')
 const path = require("path");
 
 dotenv.config();
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(passport.initialize());
 app.use("/api", authRoutes);
 app.use("/auth", googleAuthRoute);
+
+app.use("/api", router);
 
 app.use(express.static(path.join(__dirname, "public")));
 

@@ -24,7 +24,7 @@ router.get("/transaction", auth, async (req, res) => {
   }
 });
 
-router.put("/updateTransaction:id", auth, async (req, res) => {
+router.put("/updateTransaction/:id", auth, async (req, res) => {
   try {
     const transaction = await Transaction.findOneAndUpdate(
       { _id: req.params.id, user: req.user.id },
@@ -37,7 +37,7 @@ router.put("/updateTransaction:id", auth, async (req, res) => {
   }
 });
 
-router.delete("/deleteTransaction:id", auth, async (req, res) => {
+router.delete("/deleteTransaction/:id", auth, async (req, res) => {
   try {
     await Transaction.findOneAndDelete({
       _id: req.params.id,

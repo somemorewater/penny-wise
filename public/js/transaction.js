@@ -3,7 +3,7 @@ let transactions = [];
 let editingId = null;
 let deletingId = null;
 
-const API = "http://localhost:5000/api";
+const API = "https://penny-wise-z9b9.onrender.com//api";
 const token = () => localStorage.getItem("token");
 
 // ================= DOM ELEMENTS =================

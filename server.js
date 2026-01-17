@@ -13,6 +13,13 @@ const app = express();
 connectDB();
 const PORT = process.env.PORT;
 
+app.use(
+  cors({
+    origin: "FRONTEND_URL",
+    credentials: true,
+  })
+);
+
 
 app.use(express.json()); 
 

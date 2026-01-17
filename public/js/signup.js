@@ -33,7 +33,7 @@ if (signupForm) {
     showMessage("Creating account…", "info");
 
     try {
-      const res = await fetch("https://penny-wise-z9b9.onrender.com//api/signup", {
+      const res = await fetch("https://penny-wise-z9b9.onrender.com/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

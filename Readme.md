@@ -1,9 +1,9 @@
-# 💸 Penny Wise
+# Penny Wise
 
 Penny Wise is a simple finance tracker app that helps users track income and expenses in one place.  
 Built with **Express.js**, it supports **basic CRUD operations**, **JWT authentication**, and **Google OAuth**.
 
-## 🚀 Features
+## Features
 - User authentication (Email/Password + Google Auth)
 - Create, read, update, delete transactions
 - Track income and expenses
@@ -11,7 +11,7 @@ Built with **Express.js**, it supports **basic CRUD operations**, **JWT authenti
 - Secure routes with JWT
 - RESTful API design
 
-## 🛠 Tech Stack
+## Tech Stack
 - **Node.js**
 - **Express.js**
 - **MongoDB + Mongoose**
@@ -19,18 +19,18 @@ Built with **Express.js**, it supports **basic CRUD operations**, **JWT authenti
 - **Google OAuth 2.0**
 - **pnpm** (recommended)
 
-## 📂 Project Structure
+## Project Structure
 
-├── controllers ├── models ├── routes ├── middleware ├── config ├── server.js └── package.json
+├── models ├── routes ├── middleware ├── config ├── server.js └── package.json
 
-## 🔐 Authentication
+## Authentication
 - **Normal Auth**: Email + password (hashed)
 - **Google Auth**: OAuth login, auto-creates user if not found
 - JWT used to protect private routes
 
-## 📌 API Endpoints
+## API Endpoints
 ### Auth
-- `POST /api/auth/register`
+- `POST /api/signup
 - `POST /api/auth/login`
 - `GET /api/auth/google`
 - `GET /api/auth/google/callback`
@@ -43,9 +43,9 @@ Built with **Express.js**, it supports **basic CRUD operations**, **JWT authenti
 
 > All transaction routes require authentication.
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 ```bash
-git clone https://github.com/your-username/penny-wise.git
+git clone https://github.com/somemorewater/penny-wise.git
 cd penny-wise
 pnpm install
 
@@ -56,15 +56,16 @@ MONGO_URI=your_mongodb_uri
 JWT_SECRET=your_secret
 GOOGLE_CLIENT_ID=your_google_client_id
 GOOGLE_CLIENT_SECRET=your_google_client_secret
+FRONTEND_URL=your frontend u
 
 Run the server:
 
 pnpm start
 
-🧠 Why Penny Wise?
+Why Penny Wise?
 
 Most finance apps are bloated. Penny Wise is straight to the point — track money, stay aware, move smart.
 
-📜 License
+License
 
 MIT — do whatever, just don’t be dumb.

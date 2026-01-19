@@ -2,11 +2,18 @@ import { fetchTransactions, initTransactionEvents } from "./transaction.js";
 
 // ===== Auth token from URL =====
 const params = new URLSearchParams(window.location.search);
-const token = params.get("token");
+const urlToken = params.get("token");
 
-if (token) {
-  localStorage.setItem("token", token);
+if (urlToken) {
+  localStorage.setItem("token", urlToken);
   window.history.replaceState({}, document.title, "/");
+}
+
+// ===== Auth Guard =====
+const token = localStorage.getItem("token");
+
+if (!token) {
+  window.location.replace("./login.html");
 }
 
 // ===== Theme =====

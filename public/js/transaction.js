@@ -1,5 +1,6 @@
 // ================= STATE =================
 let transactions = [];
+let filteredTransactions = [];
 let editingId = null;
 let deletingId = null;
 
@@ -7,6 +8,10 @@ const API = "https://penny-wise-z9b9.onrender.com/api";
 const token = () => localStorage.getItem("token");
 
 // ================= DOM ELEMENTS =================
+const dateFromInput = document.getElementById("dateFrom");
+const dateToInput = document.getElementById("dateTo");
+const categoryFilter = document.getElementById("category");
+const typeFilter = document.getElementById("type");
 const transactionForm = document.getElementById("transactionForm");
 const transactionDate = document.getElementById("transactionDate");
 const transactionDescription = document.getElementById(
@@ -20,6 +25,39 @@ const addTransactionBtn = document.getElementById("addTransaction");
 const confirmDeleteBtn = document.getElementById("confirmDelete");
 const cancelTransactionBtns = document.querySelectorAll(".cancel-btn");
 const cancelDeleteBtns = document.querySelectorAll(".delete-cancel-btn");
+
+// ================= FILTER LOGIC ================
+function applyFilters() {
+  const from = dateFromInput.value ? new Date(dateFromInput.value) : null;
+  const to = dateToInput.value ? new Date(dateToInput.value) : null;
+  const category = categoryFilter.value;
+  const type = typeFilter.value;
+
+  filteredTransactions = transactions.filter((t) => {
+    const txDate = new Date(t.date);
+
+    if (from && txDate < from) return false;
+    if (to && txDate > to) return false;
+
+    if (category !== "all" && t.category !== category) return false;
+    if (type !== "all" && t.type !== type) return false;
+
+    return true;
+  });
+
+  document.getElementById("resetFilters").onclick = () => {
+    dateFromInput.value = "";
+    dateToInput.value = "";
+    categoryFilter.value = "all";
+    typeFilter.value = "all";
+    applyFilters();
+  };
+
+  renderTransactions();
+  updateStats();
+  updateCharts();
+}
+
 
 // ================= CHART SETUP =================
 const trendsChart = new Chart(document.getElementById("trendsChart"), {
@@ -89,12 +127,12 @@ async function deleteTransaction() {
 function renderTransactions() {
   const tbody = document.getElementById("transactionTable");
 
-  if (!transactions.length) {
+  if (!filteredTransactions.length) {
     tbody.innerHTML = `<tr><td colspan="5">No transactions</td></tr>`;
     return;
   }
 
-  tbody.innerHTML = transactions
+  tbody.innerHTML = filteredTransactions
     .map(
       (t) => `
       <tr>
@@ -102,8 +140,8 @@ function renderTransactions() {
         <td>${t.description}</td>
         <td>${t.category}</td>
         <td class="${t.type}">${t.type === "income" ? "+" : "-"}₦${
-        t.amount
-      }</td>
+          t.amount
+        }</td>
         <td>
           <div class="action-buttons">
             <button class="icon-btn edit-btn" data-edit="${
@@ -124,7 +162,7 @@ function renderTransactions() {
             </button>
           </div>
         </td>
-      </tr>`
+      </tr>`,
     )
     .join("");
 }
@@ -134,8 +172,8 @@ function updateStats() {
   let income = 0,
     expense = 0;
 
-  transactions.forEach((t) =>
-    t.type === "income" ? (income += t.amount) : (expense += t.amount)
+  filteredTransactions.forEach((t) =>
+    t.type === "income" ? (income += t.amount) : (expense += t.amount),
   );
 
   document.querySelector(
@@ -155,7 +193,7 @@ function updateCharts() {
   const income = {},
     expense = {};
 
-  transactions.forEach((t) => {
+  filteredTransactions.forEach((t) => {
     const m = new Date(t.date).toLocaleString("en-US", {
       month: "short",
       year: "numeric",
@@ -205,6 +243,12 @@ function updateCharts() {
 export function initTransactionEvents() {
   // Open modal
   addTransactionBtn.onclick = openModal;
+
+  //Filter
+  [dateFromInput, dateToInput, categoryFilter, typeFilter].forEach((el) => {
+    el.addEventListener("change", applyFilters);
+  });
+
 
   // Form submit
   transactionForm.onsubmit = (e) => {

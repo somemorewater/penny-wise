@@ -37,21 +37,15 @@ function applyFilters() {
     const txDate = new Date(t.date);
 
     if (from && txDate < from) return false;
-    if (to && txDate > to) return false;
+    if (to) {
+      to.setHours(23, 59, 59, 999);
+    }
 
     if (category !== "all" && t.category !== category) return false;
     if (type !== "all" && t.type !== type) return false;
 
     return true;
   });
-
-  document.getElementById("resetFilters").onclick = () => {
-    dateFromInput.value = "";
-    dateToInput.value = "";
-    categoryFilter.value = "all";
-    typeFilter.value = "all";
-    applyFilters();
-  };
 
   renderTransactions();
   updateStats();
@@ -84,10 +78,10 @@ export async function fetchTransactions() {
   });
 
   transactions = await res.json();
-  renderTransactions();
-  updateStats();
-  updateCharts();
+  filteredTransactions = [...transactions];
+  applyFilters();
 }
+
 
 // ================= CREATE / UPDATE =================
 async function saveTransaction(data) {
@@ -241,6 +235,7 @@ function updateCharts() {
 
 // ================= EVENTS =================
 export function initTransactionEvents() {
+  const resetBtn = document.getElementById("resetFilters");
   // Open modal
   addTransactionBtn.onclick = openModal;
 
@@ -275,6 +270,17 @@ export function initTransactionEvents() {
       openDeleteModal();
     }
   });
+
+  //Reset filters
+  if (resetBtn) {
+    resetBtn.onclick = () => {
+      dateFromInput.value = "";
+      dateToInput.value = "";
+      categoryFilter.value = "all";
+      typeFilter.value = "all";
+      applyFilters();
+    };
+  }
 
   // Confirm delete
   confirmDeleteBtn.onclick = deleteTransaction;

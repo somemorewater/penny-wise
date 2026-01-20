@@ -233,6 +233,36 @@ function updateCharts() {
   categoryChart.update();
 }
 
+// ================= MODALS =================
+function fillForm(t) {
+  transactionDate.value = t.date.split("T")[0];
+  transactionDescription.value = t.description;
+  transactionCategory.value = t.category;
+  transactionType.value = t.type;
+  transactionAmount.value = t.amount;
+}
+
+function openModal() {
+  document.getElementById("transactionModal").classList.add("active");
+}
+
+function closeModal() {
+  const modal = document.getElementById("transactionModal");
+  modal.classList.remove("active");
+  transactionForm.reset();
+  editingId = null;
+}
+
+function openDeleteModal() {
+  document.getElementById("deleteModal").classList.add("active");
+}
+
+function closeDeleteModal() {
+  const modal = document.getElementById("deleteModal");
+  modal.classList.remove("active");
+  deletingId = null;
+}
+
 // ================= EVENTS =================
 export function initTransactionEvents() {
   const resetBtn = document.getElementById("resetFilters");
@@ -258,7 +288,7 @@ export function initTransactionEvents() {
   };
 
   // Action buttons
-  document.addEventListener("click", (e) => {
+  document.getElementById("transactionTable").addEventListener("click", (e) => {
     if (e.target.closest(".edit-btn")) {
       editingId = e.target.closest(".edit-btn").dataset.edit;
       const t = transactions.find((x) => x._id === editingId);
@@ -286,32 +316,6 @@ export function initTransactionEvents() {
   confirmDeleteBtn.onclick = deleteTransaction;
 
   // Cancel buttons
-  cancelTransactionBtns.forEach((btn) => (btn.onclick = closeModal));
-  cancelDeleteBtns.forEach((btn) => (btn.onclick = closeDeleteModal));
-}
-
-// ================= MODALS =================
-function fillForm(t) {
-  transactionDate.value = t.date.split("T")[0];
-  transactionDescription.value = t.description;
-  transactionCategory.value = t.category;
-  transactionType.value = t.type;
-  transactionAmount.value = t.amount;
-}
-
-function openModal() {
-  document.getElementById("transactionModal").classList.add("active");
-}
-
-function closeModal() {
-  document.getElementById("transactionModal").classList.remove("active");
-  transactionForm.reset();
-}
-
-function openDeleteModal() {
-  document.getElementById("deleteModal").classList.add("active");
-}
-
-function closeDeleteModal() {
-  document.getElementById("deleteModal").classList.remove("active");
+  document.getElementById("closeModal").onclick = closeModal;
+  document.getElementById("closeDeleteModal").onclick = closeDeleteModal;
 }

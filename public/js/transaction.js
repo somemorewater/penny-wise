@@ -266,6 +266,8 @@ function closeDeleteModal() {
 // ================= EVENTS =================
 export function initTransactionEvents() {
   const resetBtn = document.getElementById("resetFilters");
+  const cancelTransactionBtn = document.getElementById("cancelTransaction");
+  const cancelDeleteBtn = document.getElementById("cancelDelete");
   // Open modal
   addTransactionBtn.onclick = openModal;
 
@@ -309,6 +311,21 @@ export function initTransactionEvents() {
       categoryFilter.value = "all";
       typeFilter.value = "all";
       applyFilters();
+    };
+  }
+
+  //Cancel button
+  if (cancelTransactionBtn) {
+    cancelTransactionBtn.onclick = (e) => {
+      e.stopPropagation();
+      closeModal();
+    };
+  }
+
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.onclick = (e) => {
+      e.stopPropagation();
+      closeDeleteModal();
     };
   }
 

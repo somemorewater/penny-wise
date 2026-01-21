@@ -16,7 +16,6 @@ router.post("/signup", async (req, res) => {
     try {
       user = await User.create({ fullName, email, password: hashedPassword });
     } catch (err) {
-      console.error("CREATE USER ERROR:", err);
       if (err.code === 11000) {
         return res.status(400).json({ message: "Email already exists" });
       }
@@ -29,7 +28,6 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).json({ token });
   } catch (err) {
-    console.error("SIGNUP ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 });

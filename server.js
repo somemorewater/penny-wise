@@ -14,13 +14,6 @@ app.set("trust proxy", 1);
 connectDB();
 const PORT = process.env.PORT || 5000;
 
-app.use(
-  cors({
-    origin: "*",
-    credentials: true,
-  })
-);
-
 
 app.use(express.json()); 
 

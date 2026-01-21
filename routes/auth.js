@@ -7,14 +7,21 @@ const User = require("../models/User");
 router.post("/signup", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
+    if (!fullName || !email || !password)
+      return res.status(400).json({ message: "All fields required" });
 
-    const hashedPassword = await bcrypt.hash(password, 20);
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
-      fullName,
-      email,
-      password: hashedPassword,
-    });
+    let user;
+    try {
+      user = await User.create({ fullName, email, password: hashedPassword });
+    } catch (err) {
+      console.error("CREATE USER ERROR:", err);
+      if (err.code === 11000) {
+        return res.status(400).json({ message: "Email already exists" });
+      }
+      throw err;
+    }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
@@ -22,9 +29,11 @@ router.post("/signup", async (req, res) => {
 
     res.status(201).json({ token });
   } catch (err) {
+    console.error("SIGNUP ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 });
+
 
 router.post("/login", async (req, res) => {
   try {

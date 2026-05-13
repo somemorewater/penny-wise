@@ -1,6 +1,6 @@
 # Penny Wise
 
-Penny Wise is a simple finance tracker app that helps users track income and expenses in one place.  
+Penny Wise is a simple finance tracker web-app that helps users track income and expenses in one place.  
 Built with **Express.js**, it supports **basic CRUD operations**, **JWT authentication**, and **Google OAuth**.
 
 ## Features
